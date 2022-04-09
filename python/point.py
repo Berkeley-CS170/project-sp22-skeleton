@@ -21,6 +21,18 @@ class Point:
 
     @staticmethod
     def distance(first: Point, second: Point):
+        """Returns a Distance object that represents the distance between the
+        two given points. We do this to avoid floating point imprecision.
+
+        Distance objects support comparison with numbers and other distances.
+
+        >>> Point.distance(Point(0, 0), Point(3, 4)) == 5
+        True
+        >>> Point.distance(Point(0, 0), Point(2, 3)) < 5
+        True
+        >>> Point.distance(Point(0, 0), Point(2, 3)) >= 5
+        False
+        """
         return Distance((first.x - second.x) ** 2 + (first.y - second.y) ** 2)
 
     def replace(self, *, x: Optional[int]=None, y: Optional[int]=None) -> Point:
