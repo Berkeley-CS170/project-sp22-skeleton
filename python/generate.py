@@ -1,4 +1,5 @@
 """Generates instance inputs of small, medium, and large sizes.
+
 Modify this file to generate your own problem instances.
 
 For usage, run `python3 generate.py --help`.
@@ -10,6 +11,7 @@ from pathlib import Path
 from cli_utils import StdoutFileWrapper
 from instance import Instance
 from size import Size
+from file_wrappers import StdoutFileWrapper
 
 
 def make_small_instance() -> Instance:

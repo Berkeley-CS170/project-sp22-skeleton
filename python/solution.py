@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import dataclasses
-import io
 import math
 from typing import Iterable, List, TYPE_CHECKING
 
+import parse
 from instance import Instance
 from point import Point
 from svg import SVGGraphic
@@ -60,13 +60,13 @@ class Solution:
 
     @staticmethod
     def parse(lines: Iterable[str], instance: Instance):
-        lines = iter(lines)
-        num_towers_s = next(lines, None)
+        lines_iter = parse.remove_comments(lines)
+        num_towers_s = next(lines_iter, None)
         assert num_towers_s is not None
         num_towers = int(num_towers_s)
 
         towers = []
-        for line in lines:
+        for line in lines_iter:
             towers.append(Point.parse(line))
         assert num_towers == len(towers)
 
@@ -79,10 +79,8 @@ class Solution:
         for tower in self.towers:
             print(tower.x, tower.y, file=out)
 
-    def serialize_to_string(self):
-        sio = io.StringIO()
-        self.serialize(sio)
-        return sio.getvalue().strip()
+    def serialize_to_string(self) -> str:
+        return parse.serialize_to_string_impl(self.serialize, self)
 
     def visualize_as_svg(self, config: VisualizationConfig) -> SVGGraphic:
         out = self.instance.visualize_as_svg(config)
