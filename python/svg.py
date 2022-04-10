@@ -12,6 +12,7 @@
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
 
+
 class SVGRect:
     def __init__(self, x, y, width, height, stroke, fill):
         self.x = x
@@ -98,19 +99,28 @@ class SVGGraphic:
         self.height = height
         self.shapes = []
 
-    def draw_rect(self, x, y, width, height, stroke, fill):
+    def draw_rect(self, x, y, width, height, stroke="black", fill="black"):
         self.shapes.append(SVGRect(x, y, width, height, stroke, fill))
 
-    def draw_circle(self, x, y, radius, stroke, fill):
+    def draw_circle(self, x, y, radius, stroke="black", fill="black"):
         self.shapes.append(SVGCircle(x, y, radius, stroke, fill))
 
-    def draw_line(self, x1, y1, x2, y2, stroke):
+    def draw_line(self, x1, y1, x2, y2, stroke="black"):
         self.shapes.append(SVGLine(x1, y1, x2, y2, stroke))
 
     def draw_polygon(self, points, stroke, fill):
         self.shapes.append(SVGPolygon(points, stroke, fill))
 
-    def write_text(self, x, y, text, stroke, fill, font_size, font_family):
+    def write_text(
+        self,
+        x,
+        y,
+        text,
+        stroke="black",
+        fill="black",
+        font_size="medium",
+        font_family="serif",
+    ):
         self.shapes.append(SVGText(x, y, text, stroke, fill, font_size, font_family))
 
     def __str__(self):
@@ -120,34 +130,5 @@ class SVGGraphic:
         )
 
 
-def create_graphic(width, height):
-    return SVGGraphic(width, height)
-
-
-def draw_rect(graphic, x, y, width, height, stroke="black", fill="black"):
-    graphic.draw_rect(x, y, width, height, stroke, fill)
-
-
-def draw_circle(graphic, x, y, radius, stroke="black", fill="black"):
-    graphic.draw_circle(x, y, radius, stroke, fill)
-
-
-def draw_line(graphic, x1, y1, x2, y2, stroke="black"):
-    graphic.draw_line(x1, y1, x2, y2, stroke)
-
-
 def draw_triangle(graphic, x1, y1, x2, y2, x3, y3, stroke="black", fill="black"):
     graphic.draw_polygon([[x1, y1], [x2, y2], [x3, y3]], stroke, fill)
-
-
-def write_text(
-    graphic,
-    x,
-    y,
-    text,
-    stroke="black",
-    fill="black",
-    font_size="medium",
-    font_family="serif",
-):
-    graphic.write_text(x, y, text, stroke, fill, font_size, font_family)
