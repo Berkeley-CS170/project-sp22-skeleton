@@ -1,7 +1,9 @@
+import io
 import unittest
 
 from point import Point
 from distance import Distance
+
 
 class TestParsePoint(unittest.TestCase):
 
@@ -31,5 +33,18 @@ class TestParsePoint(unittest.TestCase):
         want = Distance(5)
         self.assertEqual(want, Point.distance(first, second))
 
-if __name__ == '__main__':
+    def test_serialize(self):
+        point = Point(1, 2)
+        sio = io.StringIO()
+        point.serialize(sio)
+
+        self.assertEqual("1 2\n", sio.getvalue())
+
+    def test_serialize_to_string(self):
+        point = Point(1, 2)
+
+        self.assertEqual("1 2", point.serialize_to_string())
+
+
+if __name__ == "__main__":
     unittest.main()

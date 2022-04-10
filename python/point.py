@@ -1,18 +1,20 @@
 from __future__ import annotations
 
 import dataclasses
-import functools
+import io
 from typing import Optional, TypeVar
-import weakref
 
 from distance import Distance
 
 T = TypeVar("T")
+
+
 def _coalesce(*args: Optional[T], default: T) -> T:
     for arg in args:
         if arg is not None:
             return arg
     return default
+
 
 @dataclasses.dataclass(frozen=True, eq=True)
 class Point:
@@ -35,7 +37,7 @@ class Point:
         """
         return Distance((first.x - second.x) ** 2 + (first.y - second.y) ** 2)
 
-    def replace(self, *, x: Optional[int]=None, y: Optional[int]=None) -> Point:
+    def replace(self, *, x: Optional[int] = None, y: Optional[int] = None) -> Point:
         return Point(
             x=_coalesce(x, default=self.x),
             y=_coalesce(y, default=self.y)
@@ -48,3 +50,10 @@ class Point:
         x_s, y_s = points
         return Point(x=int(x_s), y=int(y_s))
 
+    def serialize(self, out):
+        print(self.x, self.y, file=out)
+
+    def serialize_to_string(self):
+        sio = io.StringIO()
+        self.serialize(sio)
+        return sio.getvalue().strip()

@@ -1,8 +1,10 @@
+import io
 import unittest
 
 from instance import Instance
 from point import Point
 from solution import Solution
+
 
 class TestParseSolution(unittest.TestCase):
 
@@ -106,7 +108,7 @@ class TestSolution(unittest.TestCase):
             cities=[Point(x=9, y=0)],
         )
         solution = Solution(
-            towers = [Point(x=0, y=9)],
+            towers=[Point(x=0, y=9)],
             instance=instance,
         )
         self.assertFalse(solution.valid())
@@ -119,7 +121,7 @@ class TestSolution(unittest.TestCase):
             cities=[Point(x=9, y=0)],
         )
         solution = Solution(
-            towers = [Point(x=9, y=1)],
+            towers=[Point(x=9, y=1)],
             instance=instance,
         )
         self.assertTrue(solution.valid())
@@ -132,7 +134,7 @@ class TestSolution(unittest.TestCase):
             cities=[Point(x=9, y=0)],
         )
         solution = Solution(
-            towers = [
+            towers=[
                 Point(x=0, y=0),
                 Point(x=0, y=1),
                 Point(x=0, y=2),
@@ -144,7 +146,7 @@ class TestSolution(unittest.TestCase):
         )
         self.assertAlmostEqual(1289.52692064, solution.penalty())
 
-    def test_serialize(self):
+    def test_serialize_to_string(self):
         instance = Instance(
             grid_side_length=10,
             coverage_radius=1,
@@ -152,7 +154,7 @@ class TestSolution(unittest.TestCase):
             cities=[Point(x=9, y=0)],
         )
         solution = Solution(
-            towers = [
+            towers=[
                 Point(x=0, y=0),
                 Point(x=0, y=1),
                 Point(x=0, y=2),
@@ -170,8 +172,39 @@ class TestSolution(unittest.TestCase):
 5 5
 5 6
 9 9
-        """.strip() + '\n', solution.serialize_to_string())
+        """.strip(), solution.serialize_to_string())
+
+    def test_serialize(self):
+        instance = Instance(
+            grid_side_length=10,
+            coverage_radius=1,
+            penalty_radius=2,
+            cities=[Point(x=9, y=0)],
+        )
+        solution = Solution(
+            towers=[
+                Point(x=0, y=0),
+                Point(x=0, y=1),
+                Point(x=0, y=2),
+                Point(x=5, y=5),
+                Point(x=5, y=6),
+                Point(x=9, y=9),
+            ],
+            instance=instance,
+        )
+        sio = io.StringIO()
+        solution.serialize(sio)
+
+        self.assertEqual("""
+6
+0 0
+0 1
+0 2
+5 5
+5 6
+9 9
+        """.strip() + "\n", sio.getvalue())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

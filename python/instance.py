@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import dataclasses
+import io
 from typing import List, Iterable, Iterator
 
 from point import Point
+
 
 def _next_int(lines: Iterator[str]):
     value = next(lines)
@@ -60,3 +62,16 @@ class Instance:
         )
         assert instance.valid()
         return instance
+
+    def serialize(self, out):
+        print(len(self.cities), file=out)
+        print(self.grid_side_length, file=out)
+        print(self.coverage_radius, file=out)
+        print(self.penalty_radius, file=out)
+        for city in self.cities:
+            city.serialize(out)
+
+    def serialize_to_string(self):
+        sio = io.StringIO()
+        self.serialize(sio)
+        return sio.getvalue().strip()

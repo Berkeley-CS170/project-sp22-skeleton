@@ -5,6 +5,7 @@ import functools
 import numbers
 from typing import Union
 
+
 class DoNotImplement(NotImplementedError):
     def __str__(self):
         return "Do not implement this method as it loses precision."
@@ -51,14 +52,19 @@ class Distance:
 
     def __add__(self, _):
         raise DoNotImplement
+
     def __sub__(self, _):
         raise DoNotImplement
+
     def __mul__(self, _):
         raise DoNotImplement
+
     def __truediv__(self, _):
         raise DoNotImplement
+
     def __floordiv__(self, _):
         raise DoNotImplement
+
     def __divmod__(self, _):
         raise DoNotImplement
 
@@ -75,4 +81,3 @@ class Distance:
 
     def __str__(self):
         return f"sqrt({self.value})"
-

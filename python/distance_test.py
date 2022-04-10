@@ -4,6 +4,7 @@ import unittest
 
 from distance import Distance, DoNotImplement
 
+
 class TestDistance(unittest.TestCase):
 
     def test_negative_construct(self):
@@ -118,5 +119,6 @@ class TestDistance(unittest.TestCase):
         with self.assertRaises(DoNotImplement):
             -Distance(10)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

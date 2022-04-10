@@ -9,8 +9,6 @@ from point import Point
 from instance import Instance
 
 
-
-
 @dataclasses.dataclass
 class Solution:
     towers: List[Point]
@@ -36,7 +34,6 @@ class Solution:
         # Use dict to preserve tower order.
         self.towers = list({tower: () for tower in self.towers}.keys())
 
-
     @staticmethod
     def parse(lines: Iterable[str], instance: Instance):
         lines = iter(lines)
@@ -56,12 +53,12 @@ class Solution:
     def serialize(self, out):
         print(len(self.towers), file=out)
         for tower in self.towers:
-            print(tower.x, tower.y, file=out);
+            print(tower.x, tower.y, file=out)
 
     def serialize_to_string(self):
         sio = io.StringIO()
         self.serialize(sio)
-        return sio.getvalue()
+        return sio.getvalue().strip()
 
     def penalty(self):
         penalty = 0

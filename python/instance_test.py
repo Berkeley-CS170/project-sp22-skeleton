@@ -1,7 +1,9 @@
+import io
 import unittest
 
 from instance import Instance
 from point import Point
+
 
 class TestParseInstance(unittest.TestCase):
 
@@ -22,7 +24,7 @@ class TestParseInstance(unittest.TestCase):
             grid_side_length=10,
             coverage_radius=1,
             penalty_radius=2,
-            cities = [
+            cities=[
                 Point(x=5, y=9),
                 Point(x=2, y=2),
                 Point(x=1, y=1),
@@ -131,6 +133,49 @@ class TestInstance(unittest.TestCase):
         )
         self.assertFalse(instance.valid())
 
+    def test_serialize(self):
+        instance = Instance(
+            grid_side_length=10,
+            coverage_radius=1,
+            penalty_radius=2,
+            cities=[
+                Point(x=1, y=0),
+                Point(x=1, y=2),
+            ],
+        )
 
-if __name__ == '__main__':
+        sio = io.StringIO()
+        instance.serialize(sio)
+        self.assertEqual("""
+2
+10
+1
+2
+1 0
+1 2
+        """.strip() + "\n", sio.getvalue())
+
+    def test_serialize_to_string(self):
+        instance = Instance(
+            grid_side_length=10,
+            coverage_radius=1,
+            penalty_radius=2,
+            cities=[
+                Point(x=1, y=0),
+                Point(x=1, y=2),
+            ],
+        )
+
+        sio = io.StringIO()
+        self.assertEqual("""
+2
+10
+1
+2
+1 0
+1 2
+        """.strip(), instance.serialize_to_string())
+
+
+if __name__ == "__main__":
     unittest.main()
