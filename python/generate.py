@@ -5,10 +5,9 @@ For usage, run `python3 generate.py --help`.
 """
 
 import argparse
-import contextlib
 from pathlib import Path
-import sys
 
+from cli_utils import StdoutFileWrapper
 from instance import Instance
 from size import Size
 
@@ -41,14 +40,6 @@ SIZE_TO_GENERATE = {
     MEDIUM: make_medium_instance,
     LARGE: make_large_instance,
 }
-
-
-class StdoutFileWrapper(contextlib.AbstractContextManager):
-    def __enter__(self):
-        return sys.stdout
-
-    def __exit__(self, _type, _value, _traceback):
-        return None
 
 
 def outfile(args, size: str):
