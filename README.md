@@ -32,6 +32,22 @@ stdout redirection:
 python3 solve.py case.in --solver=naive > case.out
 ```
 
+## Visualizing Instances
+
+To visualize problem instances, run `python3 visualize.py`, passing  in the path to your 
+`.in` file as the first argument (or `-` to read from standard input). To visualize a solution
+as well, pass in a `.out` file to the option `--with-solution`.
+
+By default, the output visualization will be written as a SVG file to standard output.
+To redirect it to a file, use your shell's output redirection or pass in an output file as
+an additional argument.
+
+For example, you could run
+```bash
+python3 visualize.py my_input.in --with-solution my_soln.out out.svg
+```
+to create an `out.svg` file representing `my_soln.out` for the `my_input.in` problem instance.
+
 ## Other tooling
 
 We may provide additional tooling, including a tool that calls a solver on all
