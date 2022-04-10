@@ -16,6 +16,7 @@ class TestParseSolution(unittest.TestCase):
             cities=[Point(x=9, y=0)],
         )
         solution = Solution.parse("""
+# Penalty: 123
 3
 9 1
 3 4
