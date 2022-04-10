@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import dataclasses
-import io
 from typing import Optional, TypeVar
 
 from distance import Distance
+import parse
 
 T = TypeVar("T")
 
@@ -75,7 +75,5 @@ class Point:
     def serialize(self, out):
         print(self.x, self.y, file=out)
 
-    def serialize_to_string(self):
-        sio = io.StringIO()
-        self.serialize(sio)
-        return sio.getvalue().strip()
+    def serialize_to_string(self) -> str:
+        return parse.serialize_to_string_impl(self.serialize, self)
