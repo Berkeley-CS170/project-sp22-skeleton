@@ -32,6 +32,23 @@ stdout redirection:
 python3 solve.py case.in --solver=naive > case.out
 ```
 
+## Visualizing Instances
+
+To visualize problem instances, as well as your solutions, run `make visualize`. You
+need to provide the variable `VIZ_INSTANCE`, pointing to a `.in` file representing
+a valid input file. To visualize your solution, provide the variable `VIZ_SOLUTION`
+pointing to a valid `.out` file representing your solution for that problem.
+
+By default, the output visualization will be written as a SVG file to standard output.
+To redirect it to a file, use a shell pipe or supply the variable `VIZ_OUTPUT` to specify
+an output file.
+
+For example, you could run
+```bash
+make visualize VIZ_INSTANCE=my_input.in VIZ_SOLUTION=my_soln.out VIZ_OUTPUT=out.svg
+```
+to create an `out.svg` file representing `my_soln.out` for the `my_input.in` problem instance.
+
 ## Other tooling
 
 We may provide additional tooling, including a tool that calls a solver on all
