@@ -8,6 +8,7 @@ For usage, run `python3 generate.py --help`.
 import argparse
 from pathlib import Path
 
+from cli_utils import StdoutFileWrapper
 from instance import Instance
 from size import Size
 from file_wrappers import StdoutFileWrapper
