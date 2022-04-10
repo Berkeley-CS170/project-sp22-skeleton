@@ -75,6 +75,7 @@ if __name__ == "__main__":
         "output",
         type=str,
         help="The output file. Use - for stdout.",
+        default="-",
     )
     args = parser.parse_args()
     main(args)
