@@ -11,6 +11,7 @@ class TestParseInstance(unittest.TestCase):
 
     def test_simple(self):
         lines = """
+# Small instance.
 5
 10
 1

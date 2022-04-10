@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import dataclasses
-import io
 from typing import Iterable, Iterator, List, TYPE_CHECKING
 
+import parse
 from point import Point
 from svg import SVGGraphic
 
@@ -54,14 +54,14 @@ class Instance:
         return len(set(self.cities)) == len(self.cities)
 
     @staticmethod
-    def parse(lines: Iterable[str]):
-        lines = iter(lines)
-        num_cities = _next_int(lines)
-        grid_side_length = _next_int(lines)
-        coverage_radius = _next_int(lines)
-        penalty_radius = _next_int(lines)
+    def parse(lines: Iterable[str]) -> Instance:
+        lines_iter = parse.remove_comments(lines)
+        num_cities = _next_int(lines_iter)
+        grid_side_length = _next_int(lines_iter)
+        coverage_radius = _next_int(lines_iter)
+        penalty_radius = _next_int(lines_iter)
 
-        cities = [Point.parse(line) for line in lines]
+        cities = [Point.parse(line) for line in lines_iter]
         assert num_cities == len(cities)
 
         instance = Instance(
@@ -73,7 +73,7 @@ class Instance:
         assert instance.valid()
         return instance
 
-    def serialize(self, out):
+    def serialize(self, out) -> None:
         print(len(self.cities), file=out)
         print(self.grid_side_length, file=out)
         print(self.coverage_radius, file=out)
@@ -81,10 +81,8 @@ class Instance:
         for city in self.cities:
             city.serialize(out)
 
-    def serialize_to_string(self):
-        sio = io.StringIO()
-        self.serialize(sio)
-        return sio.getvalue().strip()
+    def serialize_to_string(self) -> str:
+        return parse.serialize_to_string_impl(self.serialize, self)
 
     def visualize_as_svg(self, config: VisualizationConfig) -> SVGGraphic:
         out = SVGGraphic(config.size, config.size)
