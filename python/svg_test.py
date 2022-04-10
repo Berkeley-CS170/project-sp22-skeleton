@@ -30,18 +30,18 @@ class TestSVG(unittest.TestCase):
 
     def test_draw_rect(self):
         graphic = svg.SVGGraphic(200, 300)
-        graphic.draw_rect(10, 20, 30, 40)
+        graphic.draw_rect(10, 20, 30, 40, opacity=0.5)
         self.assert_contains_str(
             str(graphic),
-            """<rect x="10" y="20" width="30" height="40" stroke="black" fill="black" />""",
+            """<rect x="10" y="20" width="30" height="40" stroke="black" fill="black" opacity="0.5" />""",
         )
 
     def test_draw_circle(self):
         graphic = svg.SVGGraphic(200, 300)
-        graphic.draw_circle(10, 20, 30)
+        graphic.draw_circle(10, 20, 30, opacity=0.4)
         self.assert_contains_str(
             str(graphic),
-            """<circle cx="10" cy="20" r="30" stroke="black" fill="black" />""",
+            """<circle cx="10" cy="20" r="30" stroke="black" fill="black" opacity="0.4" />""",
         )
 
     def test_draw_line(self):
@@ -53,10 +53,10 @@ class TestSVG(unittest.TestCase):
 
     def test_draw_triangle(self):
         graphic = svg.SVGGraphic(200, 300)
-        svg.draw_triangle(graphic, 10, 20, 15, 150, 150, 150)
+        svg.draw_triangle(graphic, 10, 20, 15, 150, 150, 150, opacity=0.7)
         self.assert_contains_str(
             str(graphic),
-            """<polygon points="10,20 15,150 150,150" stroke="black" fill="black"/>""",
+            """<polygon points="10,20 15,150 150,150" stroke="black" fill="black" opacity="0.7" />""",
         )
 
     def test_write_text(self):
@@ -79,10 +79,10 @@ class TestSVG(unittest.TestCase):
 
     def test_stroke_fill(self):
         graphic = svg.SVGGraphic(200, 300)
-        graphic.draw_rect(10, 20, 30, 40, "pink", "blue")
+        graphic.draw_rect(10, 20, 30, 40, "pink", "blue", opacity=0.5)
         self.assert_contains_str(
             str(graphic),
-            """<rect x="10" y="20" width="30" height="40" stroke="pink" fill="blue" />""",
+            """<rect x="10" y="20" width="30" height="40" stroke="pink" fill="blue" opacity="0.5" />""",
         )
 
 
