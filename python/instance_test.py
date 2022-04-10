@@ -8,7 +8,6 @@ from visualize import VisualizationConfig
 
 
 class TestParseInstance(unittest.TestCase):
-
     def test_simple(self):
         lines = """
 # Small instance.
@@ -33,7 +32,7 @@ class TestParseInstance(unittest.TestCase):
                 Point(x=1, y=1),
                 Point(x=2, y=3),
                 Point(x=0, y=1),
-            ]
+            ],
         )
 
         self.assertEqual(want, Instance.parse(lines))
@@ -105,7 +104,6 @@ class TestParseInstance(unittest.TestCase):
 
 
 class TestInstance(unittest.TestCase):
-
     def test_invalid_oob(self):
         instance = Instance(
             grid_side_length=10,
@@ -138,8 +136,9 @@ class TestInstance(unittest.TestCase):
 
 
 class TestInstanceSerialization(unittest.TestCase):
-    def setUp(self):
-        self.instance = Instance(
+    def test_serialize(self):
+        sio = io.StringIO()
+        instance = Instance(
             grid_side_length=10,
             coverage_radius=1,
             penalty_radius=2,
@@ -148,10 +147,7 @@ class TestInstanceSerialization(unittest.TestCase):
                 Point(x=1, y=2),
             ],
         )
-
-    def test_serialize(self):
-        sio = io.StringIO()
-        self.instance.serialize(sio)
+        instance.serialize(sio)
         self.assertEqual(
             """
 2
@@ -160,9 +156,21 @@ class TestInstanceSerialization(unittest.TestCase):
 2
 1 0
 1 2
-        """.strip() + "\n", sio.getvalue())
+        """.strip()
+            + "\n",
+            sio.getvalue(),
+        )
 
     def test_serialize_to_string(self):
+        instance = Instance(
+            grid_side_length=10,
+            coverage_radius=1,
+            penalty_radius=2,
+            cities=[
+                Point(x=1, y=0),
+                Point(x=1, y=2),
+            ],
+        )
         self.assertEqual(
             """
 2
@@ -172,10 +180,20 @@ class TestInstanceSerialization(unittest.TestCase):
 1 0
 1 2
         """.strip(),
-            self.instance.serialize_to_string(),
+            instance.serialize_to_string(),
         )
 
     def test_visualize_as_svg(self):
+        instance = Instance(
+            grid_side_length=10,
+            coverage_radius=1,
+            penalty_radius=2,
+            cities=[
+                Point(x=1, y=0),
+                Point(x=1, y=2),
+            ],
+        )
+
         reference = """
 <svg width="500" height="500" xmlns="http://www.w3.org/2000/svg">
     <rect x="0" y="0" width="500" height="500" stroke="0" fill="rgb(255, 255, 255)" opacity="1" />
@@ -188,7 +206,7 @@ class TestInstanceSerialization(unittest.TestCase):
             # technically this changes the semantics, but whatever
             return "".join(x.split())
 
-        svg = self.instance.visualize_as_svg(VisualizationConfig())
+        svg = instance.visualize_as_svg(VisualizationConfig())
 
         self.assertIsInstance(svg, SVGGraphic)
 
