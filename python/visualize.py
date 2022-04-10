@@ -1,6 +1,8 @@
 import argparse
 from dataclasses import dataclass
+from pathlib import Path
 
+from file_wrappers import StdinFileWrapper, StdoutFileWrapper
 from instance import Instance
 from solution import Solution
 
@@ -16,24 +18,42 @@ class VisualizationConfig:
     penalty_opacity: float = 0.2
 
 
+def instance_file(args):
+    if args.instance == "-":
+        return StdinFileWrapper()
+
+    return Path(args.instance).open("r")
+
+
+def solution_file(args):
+    if args.instance == "-":
+        return StdinFileWrapper()
+
+    return Path(args.with_solution).open("r")
+
+
+def output_file(args):
+    if args.output == "-":
+        return StdoutFileWrapper()
+
+    return Path(args.output).open("w")
+
+
 def main(args):
     config = VisualizationConfig()
 
-    with open(args.instance, "r") as f:
+    with instance_file(args) as f:
         instance = Instance.parse(f)
 
-    if args.with_solution:
-        with open(args.with_solution) as f:
+    if args.with_solution is not None:
+        with solution_file(args) as f:
             solution = Solution.parse(f, instance)
         svg = solution.visualize_as_svg(config)
     else:
         svg = instance.visualize_as_svg(config)
 
-    if args.output == "-":
-        print(svg)
-    else:
-        with open(args.output, "w") as f:
-            f.write(str(svg))
+    with output_file(args) as f:
+        f.write(str(svg))
 
 
 if __name__ == "__main__":
@@ -43,13 +63,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "instance",
         type=str,
-        help="The input instance file.",
+        help="The input instance file. Use - for stdin.",
     )
     parser.add_argument(
         "--with-solution",
         type=str,
-        help="The solution file to visualize.",
-        default="",  # intentionally not None to simplify Makefile
+        help="The solution file to visualize. Use - for stdin.",
+        default=None,
     )
     parser.add_argument(
         "output",
