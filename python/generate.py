@@ -9,22 +9,23 @@ import contextlib
 from pathlib import Path
 import sys
 
+from instance import Instance
 from size import Size
 
 
-def make_small_instance():
+def make_small_instance() -> Instance:
     cities = []
     # YOUR CODE HERE
     return Size.SMALL.instance(cities)
 
 
-def make_medium_instance():
+def make_medium_instance() -> Instance:
     cities = []
     # YOUR CODE HERE
     return Size.MEDIUM.instance(cities)
 
 
-def make_large_instance():
+def make_large_instance() -> Instance:
     cities = []
     # YOUR CODE HERE
     return Size.LARGE.instance(cities)

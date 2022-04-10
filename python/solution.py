@@ -15,6 +15,12 @@ class Solution:
     instance: Instance
 
     def valid(self):
+        """Determines whether a solution is valid.
+
+        A solution is valid for a problem instance if its towers cover all
+        cities in the instance, all towers are in bounds, and there are no
+        duplicate towers.
+        """
         for tower in self.towers:
             if not 0 <= tower.x < self.instance.grid_side_length:
                 return False
@@ -31,8 +37,22 @@ class Solution:
         return len(set(self.towers)) == len(self.towers)
 
     def deduplicate(self):
+        """Removes duplicate towers from the solution."""
         # Use dict to preserve tower order.
         self.towers = list({tower: () for tower in self.towers}.keys())
+
+    def penalty(self):
+        """Computes the penalty for this solution."""
+        penalty = 0
+        for fidx, first in enumerate(self.towers):
+            num_overlaps = 0
+            for sidx, second in enumerate(self.towers):
+                if fidx == sidx:
+                    continue
+                if Point.distance(first, second) <= self.instance.penalty_radius:
+                    num_overlaps += 1
+            penalty += 170 * math.exp(0.17 * num_overlaps)
+        return penalty
 
     @staticmethod
     def parse(lines: Iterable[str], instance: Instance):
@@ -59,15 +79,3 @@ class Solution:
         sio = io.StringIO()
         self.serialize(sio)
         return sio.getvalue().strip()
-
-    def penalty(self):
-        penalty = 0
-        for fidx, first in enumerate(self.towers):
-            num_overlaps = 0
-            for sidx, second in enumerate(self.towers):
-                if fidx == sidx:
-                    continue
-                if Point.distance(first, second) <= self.instance.penalty_radius:
-                    num_overlaps += 1
-            penalty += 170 * math.exp(0.17 * num_overlaps)
-        return penalty

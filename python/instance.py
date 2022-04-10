@@ -36,6 +36,12 @@ class Instance:
         return self.grid_side_length
 
     def valid(self):
+        """Determines whether the problem instance is valid.
+
+        A problem instance is valid if all cities are in bounds and there
+        are no duplicate cities.
+        """
+
         for city in self.cities:
             if not 0 <= city.x < self.grid_side_length:
                 return False

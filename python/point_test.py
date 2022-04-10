@@ -30,8 +30,14 @@ class TestParsePoint(unittest.TestCase):
     def test_distance(self):
         first = Point(1, 2)
         second = Point(3, 3)
+        want = 2.23606797749979
+        self.assertAlmostEqual(want, Point.distance(first, second))
+
+    def test_distance_precise(self):
+        first = Point(1, 2)
+        second = Point(3, 3)
         want = Distance(5)
-        self.assertEqual(want, Point.distance(first, second))
+        self.assertEqual(want, Point.distance_precise(first, second))
 
     def test_serialize(self):
         point = Point(1, 2)

@@ -23,21 +23,43 @@ class Point:
 
     @staticmethod
     def distance(first: Point, second: Point):
+        """Returns the distance between two points.
+
+        >>> Point.distance(Point(0, 0), Point(3, 4))
+        5.0
+        """
+        dx = first.x - second.x
+        dy = first.y - second.y
+        return ((dx ** 2) + (dy ** 2)) ** (1/2)
+
+    @staticmethod
+    def distance_precise(first: Point, second: Point):
         """Returns a Distance object that represents the distance between the
         two given points. We do this to avoid floating point imprecision.
 
         Distance objects support comparison with numbers and other distances.
 
-        >>> Point.distance(Point(0, 0), Point(3, 4)) == 5
+        There may be bugs in the Distance implementation. Use at your own risk.
+
+        >>> Point.distance_precise(Point(0, 0), Point(3, 4)) == 5
         True
-        >>> Point.distance(Point(0, 0), Point(2, 3)) < 5
+        >>> Point.distance_precise(Point(0, 0), Point(2, 3)) < 5
         True
-        >>> Point.distance(Point(0, 0), Point(2, 3)) >= 5
+        >>> Point.distance_precise(Point(0, 0), Point(2, 3)) >= 5
         False
         """
         return Distance((first.x - second.x) ** 2 + (first.y - second.y) ** 2)
 
     def replace(self, *, x: Optional[int] = None, y: Optional[int] = None) -> Point:
+        """Constructs a new Point with the parameters passed replaced.
+
+        >>> point = Point(1, 2)
+        >>> point.replace(y=3)
+        Point(x=1, y=3)
+        >>> point = Point(1, 2)
+        >>> point.replace(x=5)
+        Point(x=5, y=2)
+        """
         return Point(
             x=_coalesce(x, default=self.x),
             y=_coalesce(y, default=self.y)
