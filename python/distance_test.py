@@ -43,10 +43,12 @@ class TestDistance(unittest.TestCase):
 
     def test_lt_num(self):
         self.assertLess(Distance(9), 4)
+        self.assertLess(Distance(9), -1)
 
     def test_le_num(self):
         self.assertLessEqual(Distance(9), 3)
         self.assertLessEqual(Distance(9), 4)
+        self.assertLessEqual(Distance(9), -1)
 
     def test_gt_num(self):
         self.assertGreater(Distance(9), 2)

@@ -22,33 +22,31 @@ class Distance:
     def __post_init__(self):
         assert self.value >= 0
 
-    def __eq__(self, other: Union[numbers.Real, Distance]):
+    def __eq__(self, other: Union[numbers.Real, numbers.Complex, Distance]):
         if isinstance(other, Distance):
             return self.value == other.value
         if isinstance(other, complex):
             if other.imag == 0:
                 return self == other.real
-            else:
+            return False
+        if isinstance(other, numbers.Real):
+            if other < 0:
                 return False
-        if not isinstance(other, numbers.Real):
-            return False
-        if other < 0:
-            return False
-        return self.value == other ** 2
+            return self.value == other ** 2
+        return False
 
-    def __lt__(self, other: Union[numbers.Real, Distance]):
+    def __lt__(self, other: Union[numbers.Real, numbers.Complex, Distance]):
         if isinstance(other, Distance):
             return self.value < other.value
         if isinstance(other, complex):
             if other.imag == 0:
                 return self < other.real
-            else:
-                raise ValueError
-        if not isinstance(other, (numbers.Real, Distance)):
-            return False
-        if other < 0:
-            return False
-        return self.value < other ** 2
+            raise ValueError
+        if isinstance(other, numbers.Real):
+            if other < 0:
+                return True
+            return self.value < other ** 2
+        return False
 
     def __add__(self, _):
         raise DoNotImplement
