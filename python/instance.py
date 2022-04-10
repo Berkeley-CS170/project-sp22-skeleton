@@ -1,10 +1,14 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import List, Iterable, Iterator
+from typing import Iterable, Iterator, List, TYPE_CHECKING
 
-from point import Point
 import parse
+from point import Point
+from svg import SVGGraphic
+
+if TYPE_CHECKING:
+    from visualize import VisualizationConfig
 
 
 def _next_int(lines: Iterator[str]):
@@ -79,3 +83,15 @@ class Instance:
 
     def serialize_to_string(self) -> str:
         return parse.serialize_to_string_impl(self.serialize, self)
+
+    def visualize_as_svg(self, config: VisualizationConfig) -> SVGGraphic:
+        out = SVGGraphic(config.size, config.size)
+        out.draw_rect(0, 0, config.size, config.size, 0, "rgb(255, 255, 255)")
+
+        def _rescale(x):
+            return x / self.grid_side_length * config.size
+
+        for city in self.cities:
+            out.draw_circle(_rescale(city.x), _rescale(city.y), 2, 0, config.city_color)
+
+        return out

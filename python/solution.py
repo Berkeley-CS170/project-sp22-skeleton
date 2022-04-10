@@ -2,11 +2,15 @@ from __future__ import annotations
 
 import dataclasses
 import math
-from typing import List, Iterable
+from typing import Iterable, List, TYPE_CHECKING
 
-from point import Point
-from instance import Instance
 import parse
+from instance import Instance
+from point import Point
+from svg import SVGGraphic
+
+if TYPE_CHECKING:
+    from visualize import VisualizationConfig
 
 
 @dataclasses.dataclass
@@ -77,3 +81,42 @@ class Solution:
 
     def serialize_to_string(self) -> str:
         return parse.serialize_to_string_impl(self.serialize, self)
+
+    def visualize_as_svg(self, config: VisualizationConfig) -> SVGGraphic:
+        out = self.instance.visualize_as_svg(config)
+
+        def _rescale(x):
+            return x / self.instance.grid_side_length * config.size
+
+        def _draw_circle(pt, radius, color, opacity):
+            out.draw_circle(
+                _rescale(pt.x),
+                _rescale(pt.y),
+                _rescale(radius),
+                0,
+                color,
+                opacity=opacity,
+            )
+
+        for tower in self.towers:
+            out.draw_circle(
+                _rescale(tower.x),
+                _rescale(tower.y),
+                2,
+                0,
+                config.tower_color,
+            )
+            _draw_circle(
+                tower,
+                self.instance.coverage_radius,
+                config.coverage_color,
+                config.coverage_opacity,
+            )
+            _draw_circle(
+                tower,
+                self.instance.penalty_radius,
+                config.penalty_color,
+                config.penalty_opacity,
+            )
+
+        return out
