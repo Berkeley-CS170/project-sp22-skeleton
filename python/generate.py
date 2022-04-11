@@ -7,25 +7,48 @@ For usage, run `python3 generate.py --help`.
 
 import argparse
 from pathlib import Path
+from typing import Callable, Dict
 
 from instance import Instance
 from size import Size
+from point import Point
 from file_wrappers import StdoutFileWrapper
 
 
 def make_small_instance() -> Instance:
+    """Creates a small problem instance.
+
+    Size.SMALL.instance() handles setting instance constants. Your task is to
+    specify which cities are in the instance by constructing Point() objects,
+    and add them to the cities array. The skeleton will check that the instance
+    is valid.
+    """
     cities = []
     # YOUR CODE HERE
     return Size.SMALL.instance(cities)
 
 
 def make_medium_instance() -> Instance:
+    """Creates a medium problem instance.
+
+    Size.MEDIUM.instance() handles setting instance constants. Your task is to
+    specify which cities are in the instance by constructing Point() objects,
+    and add them to the cities array. The skeleton will check that the instance
+    is valid.
+    """
     cities = []
     # YOUR CODE HERE
     return Size.MEDIUM.instance(cities)
 
 
 def make_large_instance() -> Instance:
+    """Creates a large problem instance.
+
+    Size.LARGE.instance() handles setting instance constants. Your task is to
+    specify which cities are in the instance by constructing Point() objects,
+    and add them to the cities array. The skeleton will check that the instance
+    is valid.
+    """
     cities = []
     # YOUR CODE HERE
     return Size.LARGE.instance(cities)
@@ -36,12 +59,17 @@ SMALL = 'small'
 MEDIUM = 'medium'
 LARGE = 'large'
 
-SIZE_TO_GENERATE = {
+SIZE_STR_TO_GENERATE: Dict[str, Callable[[], Instance]] = {
     SMALL: make_small_instance,
     MEDIUM: make_medium_instance,
     LARGE: make_large_instance,
 }
 
+SIZE_STR_TO_SIZE: Dict[str, Size] = {
+    SMALL: Size.SMALL,
+    MEDIUM: Size.MEDIUM,
+    LARGE: Size.LARGE,
+}
 
 def outfile(args, size: str):
     if args.output_dir == "-":
@@ -51,13 +79,16 @@ def outfile(args, size: str):
 
 
 def main(args):
-    for size, generate in SIZE_TO_GENERATE.items():
+    for size, generate in SIZE_STR_TO_GENERATE.items():
         if size not in args.size:
             continue
 
         with outfile(args, size) as f:
             instance = generate()
-            assert instance.valid()
+            assert instance.valid(), f"{size.upper()} instance was not valid."
+            assert SIZE_STR_TO_SIZE[size].instance_has_size(instance), \
+                f"{size.upper()} instance did not meet size requirements."
+            print(f"# {size.upper()} instance.", file=f)
             instance.serialize(f)
 
 

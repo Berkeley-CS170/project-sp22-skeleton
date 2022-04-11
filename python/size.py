@@ -11,6 +11,7 @@ class Size:
     grid_side_length: int
     coverage_radius: int
     penalty_radius: int
+    min_num_cities: int
     max_num_cities: int
 
     SMALL: ClassVar[Size]
@@ -21,7 +22,7 @@ class Size:
         return instance.grid_side_length == self.grid_side_length \
             and instance.coverage_radius == self.coverage_radius \
             and instance.penalty_radius == self.penalty_radius \
-            and len(instance.cities) <= self.max_num_cities
+            and self.min_num_cities <= len(instance.cities) <= self.max_num_cities
 
     def instance(self, cities):
         return Instance(
@@ -34,21 +35,24 @@ class Size:
 
 Size.SMALL = Size(
     grid_side_length=30,
-    coverage_radius=4,
+    coverage_radius=3,
     penalty_radius=11,
-    max_num_cities=40,
+    min_num_cities=15,
+    max_num_cities=25,
 )
 
 Size.MEDIUM = Size(
     grid_side_length=50,
-    coverage_radius=4,
-    penalty_radius=11,
-    max_num_cities=50,
+    coverage_radius=3,
+    penalty_radius=10,
+    min_num_cities=45,
+    max_num_cities=55,
 )
 
 Size.LARGE = Size(
     grid_side_length=100,
-    coverage_radius=4,
-    penalty_radius=11,
-    max_num_cities=60,
+    coverage_radius=3,
+    penalty_radius=10,
+    min_num_cities=195,
+    max_num_cities=205,
 )

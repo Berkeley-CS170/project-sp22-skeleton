@@ -12,7 +12,8 @@ class TestSize(unittest.TestCase):
             grid_side_length=10,
             coverage_radius=2,
             penalty_radius=1,
-            max_num_cities=2
+            min_num_cities=1,
+            max_num_cities=2,
         )
         instance = Instance(
             grid_side_length=10,
@@ -23,11 +24,29 @@ class TestSize(unittest.TestCase):
 
         self.assertTrue(size.instance_has_size(instance))
 
-    def test_different_size(self):
+    def test_different_grid_side_length(self):
         size = Size(
             grid_side_length=10,
             coverage_radius=2,
             penalty_radius=1,
+            min_num_cities=1,
+            max_num_cities=2
+        )
+        instance = Instance(
+            grid_side_length=11,
+            coverage_radius=2,
+            penalty_radius=1,
+            cities=[],
+        )
+
+        self.assertFalse(size.instance_has_size(instance))
+
+    def test_different_penalty(self):
+        size = Size(
+            grid_side_length=10,
+            coverage_radius=2,
+            penalty_radius=1,
+            min_num_cities=1,
             max_num_cities=2
         )
         different_penalty = Instance(
@@ -36,19 +55,35 @@ class TestSize(unittest.TestCase):
             penalty_radius=0,
             cities=[],
         )
-        different_coverage = Instance(
+
+        self.assertFalse(size.instance_has_size(different_penalty))
+
+    def test_different_coverage(self):
+        size = Size(
+            grid_side_length=10,
+            coverage_radius=2,
+            penalty_radius=1,
+            min_num_cities=1,
+            max_num_cities=2
+        )
+        instance = Instance(
             grid_side_length=10,
             coverage_radius=1,
             penalty_radius=1,
             cities=[],
         )
-        different_grid_side_length = Instance(
-            grid_side_length=9,
+
+        self.assertFalse(size.instance_has_size(instance))
+
+    def test_too_many_cities(self):
+        size = Size(
+            grid_side_length=10,
             coverage_radius=2,
             penalty_radius=1,
-            cities=[],
+            min_num_cities=1,
+            max_num_cities=2
         )
-        too_many_cities = Instance(
+        instance = Instance(
             grid_side_length=10,
             coverage_radius=2,
             penalty_radius=1,
@@ -59,10 +94,24 @@ class TestSize(unittest.TestCase):
             ],
         )
 
-        self.assertFalse(size.instance_has_size(different_penalty))
-        self.assertFalse(size.instance_has_size(different_coverage))
-        self.assertFalse(size.instance_has_size(different_grid_side_length))
-        self.assertFalse(size.instance_has_size(too_many_cities))
+        self.assertFalse(size.instance_has_size(instance))
+
+    def test_too_few_cities(self):
+        size = Size(
+            grid_side_length=10,
+            coverage_radius=2,
+            penalty_radius=1,
+            min_num_cities=1,
+            max_num_cities=2
+        )
+        instance = Instance(
+            grid_side_length=10,
+            coverage_radius=2,
+            penalty_radius=1,
+            cities=[],
+        )
+
+        self.assertFalse(size.instance_has_size(instance))
 
 
 if __name__ == "__main__":
