@@ -21,34 +21,43 @@ class Point:
     x: int
     y: int
 
-    @staticmethod
-    def distance(first: Point, second: Point):
-        """Returns the distance between two points.
+    def distance_sq(self: Point, second: Point):
+        """Returns the squared distance between two points.
 
-        >>> Point.distance(Point(0, 0), Point(3, 4))
-        5.0
+        Comparing squared distances avoids floating point imprecision. In
+        practice, for the small distances we are dealing with, there should be
+        no imprecision with regular square roots if floating point operations
+        are implemented in accordance with the IEEE 754 standard.
+
+        >>> Point.distance_sq(Point(0, 0), Point(3, 4))
+        25
         """
-        dx = first.x - second.x
-        dy = first.y - second.y
-        return ((dx ** 2) + (dy ** 2)) ** (1/2)
+        dx = self.x - second.x
+        dy = self.y - second.y
+        return ((dx ** 2) + (dy ** 2))
 
-    @staticmethod
-    def distance_precise(first: Point, second: Point):
+    def distance_obj(self: Point, second: Point):
         """Returns a Distance object that represents the distance between the
-        two given points. We do this to avoid floating point imprecision.
+        two given points.
 
-        Distance objects support comparison with numbers and other distances.
+        Internally, the Distance object stores the squared distance between two
+        points. When a Distance object is compared with a number, we square the
+        number. Comparing squared distances avoids floating point imprecision.
+
+        This method may be more convenient than distance_sq as there is no need
+        to manually square the other operand of comparison as the Distance
+        object squares it for you.
 
         There may be bugs in the Distance implementation. Use at your own risk.
 
-        >>> Point.distance_precise(Point(0, 0), Point(3, 4)) == 5
+        >>> Point.distance_obj(Point(0, 0), Point(3, 4)) == 5
         True
-        >>> Point.distance_precise(Point(0, 0), Point(2, 3)) < 5
+        >>> Point.distance_obj(Point(0, 0), Point(2, 3)) < 5
         True
-        >>> Point.distance_precise(Point(0, 0), Point(2, 3)) >= 5
+        >>> Point.distance_obj(Point(0, 0), Point(2, 3)) >= 5
         False
         """
-        return Distance((first.x - second.x) ** 2 + (first.y - second.y) ** 2)
+        return Distance((self.x - second.x) ** 2 + (self.y - second.y) ** 2)
 
     def replace(self, *, x: Optional[int] = None, y: Optional[int] = None) -> Point:
         """Constructs a new Point with the parameters passed replaced.

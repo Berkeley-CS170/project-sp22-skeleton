@@ -27,17 +27,16 @@ class TestParsePoint(unittest.TestCase):
         want = Point(3, 2)
         self.assertEqual(want, point.replace(x=3))
 
-    def test_distance(self):
+    def test_distance_sq(self):
         first = Point(1, 2)
         second = Point(3, 3)
-        want = 2.23606797749979
-        self.assertAlmostEqual(want, Point.distance(first, second))
+        self.assertEqual(5, Point.distance_sq(first, second))
 
-    def test_distance_precise(self):
+    def test_distance_obj(self):
         first = Point(1, 2)
         second = Point(3, 3)
         want = Distance(5)
-        self.assertEqual(want, Point.distance_precise(first, second))
+        self.assertEqual(want, Point.distance_obj(first, second))
 
     def test_serialize(self):
         point = Point(1, 2)

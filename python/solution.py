@@ -33,7 +33,7 @@ class Solution:
 
         for city in self.instance.cities:
             for tower in self.towers:
-                if Point.distance(city, tower) <= self.instance.coverage_radius:
+                if Point.distance_obj(city, tower) <= self.instance.coverage_radius:
                     break
             else:
                 return False
@@ -53,7 +53,7 @@ class Solution:
             for sidx, second in enumerate(self.towers):
                 if fidx == sidx:
                     continue
-                if Point.distance(first, second) <= self.instance.penalty_radius:
+                if Point.distance_obj(first, second) <= self.instance.penalty_radius:
                     num_overlaps += 1
             penalty += 170 * math.exp(0.17 * num_overlaps)
         return penalty
