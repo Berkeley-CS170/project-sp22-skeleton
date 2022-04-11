@@ -32,7 +32,7 @@ def infile(args):
     if args.input == "-":
         return StdinFileWrapper()
 
-    return Path(args.input).open("w")
+    return Path(args.input).open("r")
 
 
 def main(args):
