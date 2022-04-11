@@ -26,7 +26,7 @@ def instance_file(args):
 
 
 def solution_file(args):
-    if args.instance == "-":
+    if args.with_solution == "-":
         return StdinFileWrapper()
 
     return Path(args.with_solution).open("r")
