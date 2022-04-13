@@ -36,7 +36,7 @@ class Size:
 Size.SMALL = Size(
     grid_side_length=30,
     coverage_radius=3,
-    penalty_radius=11,
+    penalty_radius=8,
     min_num_cities=15,
     max_num_cities=25,
 )
@@ -52,7 +52,7 @@ Size.MEDIUM = Size(
 Size.LARGE = Size(
     grid_side_length=100,
     coverage_radius=3,
-    penalty_radius=10,
+    penalty_radius=14,
     min_num_cities=195,
     max_num_cities=205,
 )
