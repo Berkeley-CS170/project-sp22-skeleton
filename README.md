@@ -44,7 +44,7 @@ an additional argument.
 
 For example, you could run
 ```bash
-python3 visualize.py my_input.in my_soln.out out.svg
+python3 visualize.py my_input.in out.svg
 ```
 to create an `out.svg` file visualizing the `my_input.in` problem instance.
 
