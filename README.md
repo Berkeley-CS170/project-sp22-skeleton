@@ -44,9 +44,15 @@ an additional argument.
 
 For example, you could run
 ```bash
+python3 visualize.py my_input.in out.svg
+```
+to create an `out.svg` file visualizing the `my_input.in` problem instance.
+
+To visualize a solution file for this instance as well, you could run
+```bash
 python3 visualize.py my_input.in --with-solution my_soln.out out.svg
 ```
-to create an `out.svg` file representing `my_soln.out` for the `my_input.in` problem instance.
+
 
 ## Other tooling
 
