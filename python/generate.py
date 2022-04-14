@@ -6,6 +6,7 @@ For usage, run `python3 generate.py --help`.
 """
 
 import argparse
+import numpy as np
 from pathlib import Path
 from typing import Callable, Dict
 
@@ -25,6 +26,14 @@ def make_small_instance() -> Instance:
     """
     cities = []
     # YOUR CODE HERE
+    num_cities = np.random.randint(low=Size.SMALL.min_num_cities, high=Size.SMALL.max_num_cities)
+    size = Size.SMALL.grid_side_length
+    while len(cities) < num_cities:
+        x = np.random.randint(low=0, high=size)
+        y = np.random.randint(low=0, high=size)
+        point = Point(x, y)
+        if point in cities: continue
+        cities.append(Point(x, y))
     return Size.SMALL.instance(cities)
 
 
@@ -38,6 +47,14 @@ def make_medium_instance() -> Instance:
     """
     cities = []
     # YOUR CODE HERE
+    num_cities = np.random.randint(low=Size.MEDIUM.min_num_cities, high=Size.MEDIUM.max_num_cities)
+    size = Size.MEDIUM.grid_side_length
+    while len(cities) < num_cities:
+        x = np.random.randint(low=0, high=size)
+        y = np.random.randint(low=0, high=size)
+        point = Point(x, y)
+        if point in cities: continue
+        cities.append(Point(x, y))
     return Size.MEDIUM.instance(cities)
 
 
@@ -51,6 +68,14 @@ def make_large_instance() -> Instance:
     """
     cities = []
     # YOUR CODE HERE
+    num_cities = np.random.randint(low=Size.LARGE.min_num_cities, high=Size.LARGE.max_num_cities)
+    size = Size.LARGE.grid_side_length
+    while len(cities) < num_cities:
+        x = np.random.randint(low=0, high=size)
+        y = np.random.randint(low=0, high=size)
+        point = Point(x, y)
+        if point in cities: continue
+        cities.append(Point(x, y))
     return Size.LARGE.instance(cities)
 
 
