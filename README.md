@@ -24,12 +24,8 @@ To run unit tests, run `make check`.
 ## Solving
 
 We've created a solver skeleton at [`python/solve.py`](python/solve.py).
-
-The solver writes the solution to stdout. To write to a file, use your shell's
-stdout redirection:
-
-```
-python3 solve.py case.in --solver=naive > case.out
+```bash
+python3 solve.py case.in --solver=naive case.out
 ```
 
 ## Visualizing Instances
