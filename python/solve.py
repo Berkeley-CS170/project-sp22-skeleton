@@ -13,7 +13,7 @@ from typing import Callable, Dict
 from instance import Instance
 from file_wrappers import StdoutFileWrapper
 from solution import Solution
-from file_wrappers import StdinFileWrapper
+from file_wrappers import StdinFileWrapper, StdoutFileWrapper
 
 
 def solve_naive(instance: Instance) -> Solution:
