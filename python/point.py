@@ -3,8 +3,8 @@ from __future__ import annotations
 import dataclasses
 from typing import Optional, TypeVar
 
-from distance import Distance
-import parse
+from .distance import Distance
+from . import parse
 
 T = TypeVar("T")
 

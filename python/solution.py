@@ -4,10 +4,10 @@ import dataclasses
 import math
 from typing import Iterable, List, TYPE_CHECKING
 
-import parse
-from instance import Instance
-from point import Point
-from svg import SVGGraphic
+from . import parse
+from .instance import Instance
+from .point import Point
+from .svg import SVGGraphic
 
 if TYPE_CHECKING:
     from visualize import VisualizationConfig
