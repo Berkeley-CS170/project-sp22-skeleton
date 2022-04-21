@@ -67,13 +67,3 @@ To visualize a solution file for this instance as well, you could run
 ```bash
 python3 visualize.py my_input.in --with-solution my_soln.out out.svg
 ```
-
-
-## Other tooling
-
-We may provide additional tooling, including a tool that calls a solver on all
-inputs in the inputs directory, and a tool that merges input directories,
-taking the best solutions. We may also provide a C++ skeleton.
-
-If we release these, they will be released by the time that all inputs are
-released.

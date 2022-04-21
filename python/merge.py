@@ -5,7 +5,7 @@ You should not need to modify this file.
 To merge output folders `outputs1`, `outputs2`, and `best`, writing the best
 outputs into `best`, run:
 
-`python3 python/merge.py inputs outputs1 outputs2 best`
+`python3 python/merge.py --inputs inputs outputs1 outputs2 best`
 
 in the root directory.
 """
@@ -77,7 +77,7 @@ def main(args):
     files = sorted(traverse_files(args.inputs, args.outputs))
     if not files:
         print("No input files found.")
-        print("Are you sure you passed the input folder as the first argument?")
+        print("Are you sure you passed the input folder correctly?")
 
     sema = BoundedSemaphore(args.parallelism)
 
@@ -101,7 +101,7 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Runs a solver over all inputs.")
-    parser.add_argument("inputs", type=str,
+    parser.add_argument("--inputs", type=str, required=True,
                         help="Path to the inputs (read) folder.")
     parser.add_argument("outputs", type=str, nargs="+",
                         help="Paths to the output folders. The last one is "
