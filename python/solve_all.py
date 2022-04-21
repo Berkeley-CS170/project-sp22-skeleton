@@ -51,13 +51,14 @@ def traverse_files(inroot: str, outroot):
 
 def solve_one(size, inf, outf):
     with open(inf) as f:
-        instance = Instance.parse(f)
+        instance = Instance.parse(f.readlines())
     assert instance.valid()
 
     solution = solver(Size(size), instance)
     assert solution.valid()
 
-    solution.serialize(outf.open('w'))
+    with outf.open('w') as f:
+        solution.serialize(f)
     print(f"{str(inf)}: solution found with penalty", solution.penalty())
 
 

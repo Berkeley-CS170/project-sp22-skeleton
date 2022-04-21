@@ -40,6 +40,12 @@ python3 python/solve_all.py inputs outputs
 in the root directory.
 
 
+## Merging
+
+To merge multiple output folders, taking the best solutions, see
+[`python/merge.py`](python/merge.py).
+
+
 ## Visualizing Instances
 
 To visualize problem instances, run `python3 visualize.py`, passing  in the
