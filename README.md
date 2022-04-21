@@ -28,15 +28,28 @@ We've created a solver skeleton at [`python/solve.py`](python/solve.py).
 python3 solve.py case.in --solver=naive case.out
 ```
 
+We've also created a skeleton that runs your solver on all cases and puts them
+in the output directory. To use it, modify
+[`python/solve_all.py`](python/solve_all.py) to use your solver function(s).
+Then run
+
+```
+python3 python/solve_all.py inputs outputs
+```
+
+in the root directory.
+
+
 ## Visualizing Instances
 
-To visualize problem instances, run `python3 visualize.py`, passing  in the path to your 
-`.in` file as the first argument (or `-` to read from standard input). To visualize a solution
-as well, pass in a `.out` file to the option `--with-solution`.
+To visualize problem instances, run `python3 visualize.py`, passing  in the
+path to your `.in` file as the first argument (or `-` to read from standard
+input). To visualize a solution as well, pass in a `.out` file to the option
+`--with-solution`.
 
-By default, the output visualization will be written as a SVG file to standard output.
-To redirect it to a file, use your shell's output redirection or pass in an output file as
-an additional argument.
+By default, the output visualization will be written as a SVG file to standard
+output. To redirect it to a file, use your shell's output redirection or pass
+in an output file as an additional argument.
 
 For example, you could run
 ```bash
