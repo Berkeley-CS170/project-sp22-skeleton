@@ -22,12 +22,19 @@ from instance import Instance
 from solution import Solution
 
 
+def removesuffix(s: str, suffix: str):
+    if not s.endswith(suffix):
+        return s
+
+    return s[:-len(suffix)]
+
+
 def traverse_files(inroot: str, outroots):
     for size in os.listdir(inroot):
         for inf in os.listdir(os.path.join(inroot, size)):
             if not inf.endswith(".in"):
                 continue
-            outf = f"{inf.removesuffix('.in')}.out"
+            outf = f"{removesuffix(inf, '.in')}.out"
             yield (size, Path(inroot) / size / inf, [Path(outroot) / size / outf for outroot in outroots])
 
 

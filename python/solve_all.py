@@ -40,12 +40,19 @@ def solver(size: Size, instance: Instance) -> Solution:
 
 
 # You shouldn't need to modify anything below this line.
+def removesuffix(s: str, suffix: str):
+    if not s.endswith(suffix):
+        return s
+
+    return s[:-len(suffix)]
+
+
 def traverse_files(inroot: str, outroot):
     for size in os.listdir(inroot):
         for inf in os.listdir(os.path.join(inroot, size)):
             if not inf.endswith(".in"):
                 continue
-            outf = f"{inf.removesuffix('.in')}.out"
+            outf = f"{removesuffix(inf, '.in')}.out"
             yield (size, Path(inroot) / size / inf, Path(outroot) / size / outf)
 
 
