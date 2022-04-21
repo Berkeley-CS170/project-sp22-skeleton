@@ -92,6 +92,7 @@ class Instance:
             return x / self.grid_side_length * config.size
 
         for city in self.cities:
-            out.draw_circle(_rescale(city.x), _rescale(city.y), 2, 0, config.city_color)
+            out.draw_circle(_rescale(city.x), _rescale(
+                city.y), 2, 0, config.city_color)
 
         return out

@@ -72,7 +72,8 @@ class SVGPolygon:
         self.opacity = opacity
 
     def __str__(self):
-        points_str = " ".join(",".join(map(str, point)) for point in self.points)
+        points_str = " ".join(",".join(map(str, point))
+                              for point in self.points)
         return (
             """<polygon points="{0}" stroke="{1}" fill="{2}" opacity="{3}" />""".format(
                 points_str, self.stroke, self.fill, self.opacity
@@ -132,7 +133,8 @@ class SVGGraphic:
         font_size="medium",
         font_family="serif",
     ):
-        self.shapes.append(SVGText(x, y, text, stroke, fill, font_size, font_family))
+        self.shapes.append(
+            SVGText(x, y, text, stroke, fill, font_size, font_family))
 
     def __str__(self):
         shapes = "".join(str(shape) for shape in self.shapes)
@@ -144,4 +146,5 @@ class SVGGraphic:
 def draw_triangle(
     graphic, x1, y1, x2, y2, x3, y3, stroke="black", fill="black", *, opacity=1
 ):
-    graphic.draw_polygon([[x1, y1], [x2, y2], [x3, y3]], stroke, fill, opacity=opacity)
+    graphic.draw_polygon([[x1, y1], [x2, y2], [x3, y3]],
+                         stroke, fill, opacity=opacity)

@@ -273,7 +273,8 @@ class TestSolution(unittest.TestCase):
             # technically this changes the semantics, but whatever
             return "".join(x.split())
 
-        svg = solution.visualize_as_svg(VisualizationConfig(penalty_opacity=0.3))
+        svg = solution.visualize_as_svg(
+            VisualizationConfig(penalty_opacity=0.3))
 
         self.assertIsInstance(svg, SVGGraphic)
 

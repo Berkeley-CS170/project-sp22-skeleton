@@ -19,7 +19,8 @@ import svg
 
 class TestSVG(unittest.TestCase):
     def assert_contains_str(self, str, substr):
-        self.assertTrue(str.find(substr) > -1, "%s does not contain %s" % (str, substr))
+        self.assertTrue(str.find(substr) > -1,
+                        "%s does not contain %s" % (str, substr))
 
     def test_create_graphic(self):
         graphic = svg.SVGGraphic(200, 300)
