@@ -18,6 +18,7 @@ from instance import Instance
 from solution import Solution
 
 # Modify this line to import your own solvers.
+# YOUR CODE HERE
 from solve import solve_naive
 
 
@@ -29,6 +30,7 @@ class Size(enum.Enum):
 
 def solver(size: Size, instance: Instance) -> Solution:
     # Modify this function to use your imported solvers.
+    # YOUR CODE HERE
     if size == Size.SMALL:
         return solve_naive(instance)
     elif size == Size.MEDIUM:
@@ -76,13 +78,14 @@ def main(args):
 
     sema = BoundedSemaphore(args.parallelism)
 
-    def callback(result):
+    def callback(_):
         sema.release()
 
     def make_error_callback(size, inf):
         def error_callback(error):
             print(f"{size} job failed ({inf}):", error)
             sema.release()
+        return error_callback
 
     with multiprocessing.Pool(args.parallelism) as pool:
         for size, inf, outf in traverse_files(args.inputs, args.outputs):
