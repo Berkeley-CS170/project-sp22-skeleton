@@ -61,10 +61,18 @@ def solve_one(size, inf, outf):
 
 def main(args):
     outroot = Path(args.outputs)
-    outroot.mkdir(exist_ok=True)
-    (outroot / Size.SMALL.value).mkdir(exist_ok=True)
-    (outroot / Size.MEDIUM.value).mkdir(exist_ok=True)
-    (outroot / Size.LARGE.value).mkdir(exist_ok=True)
+    try:
+        outroot.mkdir(exist_ok=False)
+        (outroot / Size.SMALL.value).mkdir(exist_ok=False)
+        (outroot / Size.MEDIUM.value).mkdir(exist_ok=False)
+        (outroot / Size.LARGE.value).mkdir(exist_ok=False)
+    except FileExistsError as e:
+        print("===================== ERROR =====================")
+        print("Output directory or subdirectory already exists!")
+        print("Cowardly refusing to overwrite output files.")
+        print("Move the output directory or write to a different folder.")
+        print("===================== ERROR =====================")
+        raise e
 
     sema = BoundedSemaphore(args.parallelism)
 
@@ -98,7 +106,7 @@ if __name__ == "__main__":
 
     if args.parallelism is None:
         args.parallelism = multiprocessing.cpu_count()
-        print(f"Using parallelism=cpu_count() ({args.parallelism})")
+        print(f"Info: using parallelism=cpu_count() ({args.parallelism})")
     assert args.parallelism > 0, f"Can't use f{args.parallelism} cpus!"
 
     main(args)
