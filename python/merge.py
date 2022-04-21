@@ -57,13 +57,20 @@ def process_one(_, inf, outfs, args):
             assert sol.valid()
             solutions.append(sol)
 
-    best_idx = min(range(len(solutions)), key=lambda s: solutions[s].penalty())
+    if not solutions:
+        print(f"{str(inf)}: no solutions found")
+        return
+
+    best_idx = min(range(len(solutions)),
+                   key=lambda s: solutions[s].penalty(), default=None)
     best = solutions[best_idx]
+    best_penalty = best.penalty()
     if args.verbose:
         print(
-            f"{str(inf)}: best {str(outfs[best_idx])} (penalty {best.penalty()})")
+            f"{str(inf)}: best {str(outfs[best_idx])} (penalty {best_penalty})")
 
     with outfs[-1].open('w') as f:
+        print("# Penalty:", best_penalty, file=f)
         best.serialize(f)
 
 
