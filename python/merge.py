@@ -31,11 +31,11 @@ def traverse_files(inroot: str, outroots):
             yield (size, Path(inroot) / size / inf, [Path(outroot) / size / outf for outroot in outroots])
 
 
-
 class Size(enum.Enum):
     SMALL = "small"
     MEDIUM = "medium"
     LARGE = "large"
+
 
 def process_one(_, inf, outfs, args):
     with inf.open('r') as f:
@@ -53,10 +53,12 @@ def process_one(_, inf, outfs, args):
     best_idx = min(range(len(solutions)), key=lambda s: solutions[s].penalty())
     best = solutions[best_idx]
     if args.verbose:
-        print(f"{str(inf)}: best {str(outfs[best_idx])} (penalty {best.penalty()})")
+        print(
+            f"{str(inf)}: best {str(outfs[best_idx])} (penalty {best.penalty()})")
 
     with outfs[-1].open('w') as f:
         best.serialize(f)
+
 
 def main(args):
     outroot = Path(args.outputs[-1])
@@ -87,8 +89,6 @@ def main(args):
             pool.apply_async(process_one, (size, inf, outf, args),
                              callback=callback,
                              error_callback=make_error_callback(size, inf))
-
-
 
 
 if __name__ == "__main__":
