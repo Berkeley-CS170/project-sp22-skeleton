@@ -7,12 +7,11 @@ For usage, run `python3 solve.py --help`.
 
 import argparse
 from pathlib import Path
-import sys
 from typing import Callable, Dict
 
 from instance import Instance
 from solution import Solution
-from file_wrappers import StdinFileWrapper
+from file_wrappers import StdinFileWrapper, StdoutFileWrapper
 
 
 def solve_naive(instance: Instance) -> Solution:
@@ -35,14 +34,22 @@ def infile(args):
     return Path(args.input).open("r")
 
 
+def outfile(args):
+    if args.output == "-":
+        return StdoutFileWrapper()
+
+    return Path(args.output).open("w")
+
+
 def main(args):
     with infile(args) as f:
         instance = Instance.parse(f.readlines())
         solver = SOLVERS[args.solver]
         solution = solver(instance)
         assert solution.valid()
-        print("# Penalty: ", solution.penalty(), file=sys.stdout)
-        solution.serialize(sys.stdout)
+        with outfile(args) as g:
+            print("# Penalty: ", solution.penalty(), file=g)
+            solution.serialize(g)
 
 
 if __name__ == "__main__":
@@ -51,4 +58,7 @@ if __name__ == "__main__":
                         "read an instance from. Use - for stdin.")
     parser.add_argument("--solver", required=True, type=str,
                         help="The solver type.", choices=SOLVERS.keys())
+    parser.add_argument("output", type=str,
+                        help="The output file. Use - for stdout.",
+                        default="-")
     main(parser.parse_args())
