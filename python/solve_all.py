@@ -56,17 +56,23 @@ def traverse_files(inroot: str, outroot):
             yield (size, Path(inroot) / size / inf, Path(outroot) / size / outf)
 
 
-def solve_one(size, inf, outf):
-    with open(inf) as f:
-        instance = Instance.parse(f.readlines())
-    assert instance.valid()
+def solve_one(args):
+    size, inf, outf = args
+    try:
+        with open(inf) as f:
+            instance = Instance.parse(f.readlines())
+        assert instance.valid()
 
-    solution = solver(Size(size), instance)
-    assert solution.valid()
+        solution = solver(Size(size), instance)
+        assert solution.valid()
 
-    with outf.open('w') as f:
-        solution.serialize(f)
-    print(f"{str(inf)}: solution found with penalty", solution.penalty())
+        with outf.open('w') as f:
+            solution.serialize(f)
+
+    except Exception as e:
+        print(f"{size} job failed ({inf}):", e)
+    else:
+        print(f"{str(inf)}: solution found with penalty", solution.penalty())
 
 
 def main(args):
@@ -84,24 +90,8 @@ def main(args):
         print("===================== ERROR =====================")
         raise e
 
-    sema = BoundedSemaphore(args.parallelism)
-
-    def callback(_):
-        sema.release()
-
-    def make_error_callback(size, inf):
-        def error_callback(error):
-            print(f"{size} job failed ({inf}):", error)
-            sema.release()
-        return error_callback
-
     with multiprocessing.Pool(args.parallelism) as pool:
-        for size, inf, outf in traverse_files(args.inputs, args.outputs):
-            sema.acquire()
-            print(f"{str(inf)}: spawning job")
-            pool.apply_async(solve_one, (size, inf, outf),
-                             callback=callback,
-                             error_callback=make_error_callback(size, inf))
+        pool.map(solve_one, traverse_files(args.inputs, args.outputs))
 
 
 if __name__ == "__main__":

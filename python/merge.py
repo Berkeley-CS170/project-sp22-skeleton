@@ -44,35 +44,40 @@ class Size(enum.Enum):
     LARGE = "large"
 
 
-def process_one(_, inf, outfs, args):
-    with inf.open('r') as f:
-        instance = Instance.parse(f.readlines())
+def process_one(args):
+    _, inf, outfs, flags = args
+    try:
+        with inf.open('r') as f:
+            instance = Instance.parse(f.readlines())
 
-    solutions = []
-    for outf in outfs:
-        if not outf.exists():
-            continue
-        with outf.open('r') as f:
-            sol = Solution.parse(f.readlines(), instance)
-            assert sol.valid()
-            solutions.append(sol)
+        solutions = []
+        for outf in outfs:
+            if not outf.exists():
+                continue
+            with outf.open('r') as f:
+                sol = Solution.parse(f.readlines(), instance)
+                assert sol.valid()
+                solutions.append(sol)
 
-    if not solutions:
-        print(f"{str(inf)}: no solutions found")
-        return
+        if not solutions:
+            print(f"{str(inf)}: no solutions found")
+            return
 
-    best_idx = min(range(len(solutions)),
-                   key=lambda s: solutions[s].penalty(), default=None)
-    best = solutions[best_idx]
-    best_penalty = best.penalty()
-    if args.verbose:
-        print(
-            f"{str(inf)}: best {str(outfs[best_idx])} (penalty {best_penalty})")
+        best_idx = min(range(len(solutions)),
+                       key=lambda s: solutions[s].penalty(), default=None)
+        best = solutions[best_idx]
+        best_penalty = best.penalty()
 
-    with outfs[-1].open('w') as f:
-        print("# Penalty:", best_penalty, file=f)
-        best.serialize(f)
+        with outfs[-1].open('w') as f:
+            print("# Penalty:", best_penalty, file=f)
+            best.serialize(f)
 
+    except Exception as e:
+        print(f"{size} job failed ({inf}):", error)
+    else:
+        if flags.verbose:
+            print(
+                f"{str(inf)}: best {str(outfs[best_idx])} (penalty {best_penalty})")
 
 def main(args):
     outroot = Path(args.outputs[-1])
@@ -86,23 +91,8 @@ def main(args):
         print("No input files found.")
         print("Are you sure you passed the input folder correctly?")
 
-    sema = BoundedSemaphore(args.parallelism)
-
-    def callback(_):
-        sema.release()
-
-    def make_error_callback(size, inf):
-        def error_callback(error):
-            print(f"{size} job failed ({inf}):", error)
-            sema.release()
-        return error_callback
-
     with multiprocessing.Pool(args.parallelism) as pool:
-        for size, inf, outf in traverse_files(args.inputs, args.outputs):
-            sema.acquire()
-            pool.apply_async(process_one, (size, inf, outf, args),
-                             callback=callback,
-                             error_callback=make_error_callback(size, inf))
+        pool.map(process_one, ((*tup, args) for tup in traverse_files(args.inputs, args.outputs)))
 
 
 if __name__ == "__main__":
